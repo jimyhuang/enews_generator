@@ -1,0 +1,6 @@
+name = Newsletter Generator
+description = Newsletter generator for color and scheme.
+core = 6.x
+dependencies[] = color
+;dependencies[] = color_scheme
+

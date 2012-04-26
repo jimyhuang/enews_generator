@@ -1,0 +1,13 @@
+.news-background { background-color: rgb(222, 232, 230); width: "100%"; }
+.news-base { background-color: rgb(165, 196, 197); padding:10px; font-family:"微軟正黑體"; font-size: 15px; color:#1F4858;}
+.top-image { border: 2px solid #FFF; line-height:0;}
+.news-extra1 { color: rgb(255, 255, 255); background-color: rgb(49, 131, 135); padding: 0 5px; font-size: 13px; }
+.news-title { margin: 0.5em 0; font-size: 16px;  }
+.news-content {line-height: 25px;text-align: justify;text-justify: inter-ideograph;word-wrap: break-word;word-break: break-all;}
+.news-article-even { background-color: rgb(229, 238, 238); }
+.news-article { margin: 10px 0px; padding: 10px; background: #FFF;}
+.news-article p { margin:8px 0; line-height: 22px; }
+.news-more { text-align: right; font-size: 13px; }
+.news-article-odd { background:#E5EEEE; border: 1px solid #CCC; }
+
+.news-header {margin-top: 0;}
