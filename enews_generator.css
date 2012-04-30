@@ -18,7 +18,7 @@
 .enews-palette {
 
 }
-.enews-wrapper {
+#enews-wrapper {
   position: fixed;
   left:10px;
   background: #F3F3F3;

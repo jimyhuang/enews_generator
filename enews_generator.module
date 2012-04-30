@@ -81,7 +81,7 @@ function theme_enews_generator_form($form) {
   $info = $form['info']['#value'];
   $output = '';
   // Wrapper
-  $output .= '<div class="enews-wrapper clear-block">';
+  $output .= '<div id="enews-wrapper" class="clear-block">';
 
   // Color schemes
   $output .= drupal_render($form['scheme']);
@@ -99,6 +99,7 @@ function theme_enews_generator_form($form) {
   $output .= '<div id="enews-picker"></div>';
 
   // close enews-wrapper
+  $output .= '<div align="center"><input type="button" id="enews-result" value="&raquo; 產生電子報" /></div>';
   $output .= '</div>';
 
   // Close wrapper

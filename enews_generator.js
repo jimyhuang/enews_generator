@@ -1,5 +1,11 @@
 Drupal.behaviors.color = function (context) {
-  $('.enews-wrapper').hover(function(){
+  $('h1.title').each(function(){
+    var title = $(this).html();
+    title += '<sup>Beta</sup>';
+    $(this).html(title);
+  });
+  $('#enews-preview').find('span.ext').remove();
+  $('#enews-wrapper').hover(function(){
     $(this).css('opacity', 0.9);
   },function(){
     $(this).css('opacity', 0.3);
@@ -50,7 +56,6 @@ Drupal.behaviors.color = function (context) {
   
   $('#edit-scheme').change(function () {
     var colors = this.options[this.selectedIndex].value;
-    console.log(colors);
     if (colors != '') {
       colors = colors.split(',');
       for (i in colors) {
@@ -60,12 +65,17 @@ Drupal.behaviors.color = function (context) {
     }
   });
 
-  $('<div align="center"><input type="button" id="enews-result" value="複製結果" /></div>').insertAfter('#enews-preview');
   $('#enews-result').click(function(){
     var result = $('#enews-preview').html();
-//    console.log(result);
+    var encoded = $("<div/>").text(result).html();
+    var popup = '<div id="enews-result-cbox"><textarea rows="8" style="width:430px;height:210px;" onclick="this.select();">'+encoded+'</textarea><div align="center">選擇上方產生的電子報，按 Ctrl+C 複製，貼上到你的編輯器</div></div>';
+    $.colorbox({
+      html:popup,
+      title:'電子報產生結果',
+      width:'450px',
+      height:'300px',
+    });
   });
-
 
   function preview(){
     $('.enews-palette').each(function(){
@@ -113,3 +123,4 @@ Drupal.behaviors.color = function (context) {
     }
   }
 }
+

@@ -6,8 +6,10 @@
 .news-content {line-height: 25px;text-align: justify;text-justify: inter-ideograph;word-wrap: break-word;word-break: break-all;}
 .news-article-even { background-color: rgb(229, 238, 238); }
 .news-article { margin: 10px 0px; padding: 10px; background: #FFF;}
-.news-article p { margin:8px 0; line-height: 22px; }
+.news-article p { margin:0; line-height: 22px; }
 .news-more { text-align: right; font-size: 13px; }
 .news-article-odd { background:#E5EEEE; border: 1px solid #CCC; }
-
 .news-header {margin-top: 0;}
+.news-content td{
+  padding: 3px;
+}
