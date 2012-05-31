@@ -4,7 +4,7 @@
 */
 function enews_generator_menu(){
   $items['newsletter/generator'] = array(
-    'title'            => 'Newsletter Generator',
+    'title'            => 'newsletter generator',
     'page callback'    => 'drupal_get_form',
     'page arguments'   => array('enews_generator_form'),
     'access arguments' => array('access content'),
@@ -12,9 +12,11 @@ function enews_generator_menu(){
   );
   return $items;
 }
-/**
+
+/*
  * Implementation of hook_theme().
- */
+*/
+// it seems useless	jinmou 2012/05/17
 function enews_generator_theme() {
   return array(
     'enews_generator_form' => array(
@@ -23,9 +25,47 @@ function enews_generator_theme() {
   );
 }
 
-function enews_generator_form(){
+
+// This is the argument for callback function drupal_get_form   jinmou 2012/05/22
+// enews_generator_form is form_id  jinmou 2012/05/24
+function enews_generator_form(&$form_state){
+
+   //dpm($form_state) ;   
+  $templates = array('',
+		     'Type1',
+   		     'Type2',
+    		     'Type3',
+  );
+
+
+  $form['scheme'] = array(
+    '#type' => 'select', // select / checkboxe / textfield / submit / radios / textarea
+    //'#value' => t('template'),
+    '#title' => t('Template'), // jinmou changed for testing 2012/05/22
+    '#options' => $templates,
+    '#default_value' => '',
+  );
+
+   $form['choose'] = array(
+    '#type' => 'submit', // select / checkboxe / textfield / submit / radios / textarea
+    '#value' => t('SUBMIT'),
+    '#default_value' => '', 
+  );
+	// Save form_state info. to form 	jinmou 2012/05/29  
+	$form['element'] = array
+	(
+	  '#type' => 'value',
+	  '#value' => isset($form_state['values']['scheme']) ? $form_state['values']['scheme'] : FALSE,
+	);
+  
+  
+// jinmou test 2012/05/24 
+// when the callback function is called more than once......
+if ($form_state['values']['scheme'])
+{
+  //print_r($form_state);
   // Load variable
-  $names = array(
+   $names = array(
     'background' => t('Background color'),
     'base' => t('Base color'),
     'article-odd' => t('Article background 1'),
@@ -37,8 +77,9 @@ function enews_generator_form(){
     'extra1' => t('Extra color !d', array('!d' => '1')),
   );
   $base = drupal_get_path('module', 'color');
+ 
 
-  // Add Farbtastic color picker
+// Add Farbtastic color picker
   drupal_add_css('misc/farbtastic/farbtastic.css', 'module', 'all', FALSE);
   drupal_add_js('misc/farbtastic/farbtastic.js');
 
@@ -47,6 +88,10 @@ function enews_generator_form(){
 //  drupal_add_js($base .'/color.js');
   drupal_add_css(drupal_get_path('module', 'enews_generator').'/enews_generator.css');
   drupal_add_js(drupal_get_path('module', 'enews_generator').'/enews_generator.js');
+
+
+// jinmou marked 2012/05/28
+/*
   $schemes = enews_generator_schemes($names);
   $schemes[''] = t('Custom');
 
@@ -56,8 +101,9 @@ function enews_generator_form(){
     '#options' => $schemes,
     '#default_value' => '',
   );
+*/
 
-  // Add palette fields
+// Add palette fields
   $form['palette']['#tree'] = true;
   foreach ($names as $name => $translation) {
     $form['palette'][$name] = array(
@@ -68,62 +114,203 @@ function enews_generator_form(){
       '#size' => 8,
     );
   }
-  return $form;
 }
+
+  //print_r($form) ;
+  //print_r($form_state) ;
+  //print_r(&$form_state) ;
+  return $form;
+
+}
+
+
 /**
  * Theme color and preview form.
  *
  * @ingroup themeable
  */
+
 function theme_enews_generator_form($form) {
-  // Include stylesheet
-  $theme = $form['theme']['#value'];
-  $info = $form['info']['#value'];
-  $output = '';
-  // Wrapper
-  $output .= '<div id="enews-wrapper" class="clear-block">';
+	//dpm($form);
+   
+	// Type 1
+	if ($form['element']['#value'] == 1)
+	{
+		// Include stylesheet
+	  	$theme = $form['theme']['#value'];
+	  	$info = $form['info']['#value'];
+	  	$output = '';
+	  	// Wrapper
+	  	$output .= '<div id="enews-wrapper" class="clear-block">';
 
-  // Color schemes
-  $output .= drupal_render($form['scheme']);
+	  // Color schemes
+	  // jinmou marked for testing 2012/05/29
+	  //$output .= drupal_render($form['scheme']);
 
-  $output .= '<div class="clear-block">';
+	  $output .= '<div class="clear-block">';
 
-  // Palette
-  $output .= '<div id="enews-palette">';
-  foreach (element_children($form['palette']) as $name) {
-    $output .= drupal_render($form['palette'][$name]);
+	  
+	// Palette
+	  $output .= '<div id="enews-palette">';
+	  foreach (element_children($form['palette']) as $name) {
+	    $output .= drupal_render($form['palette'][$name]);
+	  }
+	  $output .= '</div>';
+	
+	  // Picker color box
+	  $output .= '<div id="enews-picker"></div>';
+
+	  // close enews-wrapper
+	  $output .= '<div align="center"><input type="button" id="enews-result" value="&raquo; 產生電子報" /></div>';
+	  $output .= '</div>';
+
+	  // Close wrapper
+	  $output .= '</div>';
+
+	  // Preview
+	  // jinmou marked 2012/05/29
+	  //$output .= drupal_render($form);
+	  $output .= '<h2>'. t('Preview') .'</h2>';
+	  $output .= '<div id="enews-preview">';
+	  $output .= enews_generator_template_load('t1');
+	  $output .= '</div>';
   }
-  $output .= '</div>';
 
-  // Picker color box
-  $output .= '<div id="enews-picker"></div>';
+// Type 2
+if ($form['element']['#value'] == 2)
+	{
+		// Include stylesheet
+	  	$theme = $form['theme']['#value'];
+	  	$info = $form['info']['#value'];
+	  	$output = '';
+	  	// Wrapper
+	  	$output .= '<div id="enews-wrapper" class="clear-block">';
 
-  // close enews-wrapper
-  $output .= '<div align="center"><input type="button" id="enews-result" value="&raquo; 產生電子報" /></div>';
-  $output .= '</div>';
+	  // Color schemes
+	  // jinmou marked for testing 2012/05/29
+	  //$output .= drupal_render($form['scheme']);
 
-  // Close wrapper
-  $output .= '</div>';
+	  $output .= '<div class="clear-block">';
 
-  // Preview
+	  
+	// Palette
+	  $output .= '<div id="enews-palette">';
+	  foreach (element_children($form['palette']) as $name) {
+	    $output .= drupal_render($form['palette'][$name]);
+	  }
+	  $output .= '</div>';
+	
+	  // Picker color box
+	  $output .= '<div id="enews-picker"></div>';
+
+	  // close enews-wrapper
+	  $output .= '<div align="center"><input type="button" id="enews-result" value="&raquo; 產生電子報" /></div>';
+	  $output .= '</div>';
+
+	  // Close wrapper
+	  $output .= '</div>';
+
+	  // Preview
+	  // jinmou marked 2012/05/29
+	  //$output .= drupal_render($form);
+	  $output .= '<h2>'. t('Preview') .'</h2>';
+	  $output .= '<div id="enews-preview">';
+	  $output .= enews_generator_template_load('t2');
+	  $output .= '</div>';
+  }
+
+// Type 3	
+if ($form['element']['#value'] == 3)
+	{
+		// Include stylesheet
+	  	$theme = $form['theme']['#value'];
+	  	$info = $form['info']['#value'];
+	  	$output = '';
+	  	// Wrapper
+	  	$output .= '<div id="enews-wrapper" class="clear-block">';
+
+	  // Color schemes
+	  // jinmou marked for testing 2012/05/29
+	  //$output .= drupal_render($form['scheme']);
+
+	  $output .= '<div class="clear-block">';
+
+	  
+	// Palette
+	  $output .= '<div id="enews-palette">';
+	  foreach (element_children($form['palette']) as $name) {
+	    $output .= drupal_render($form['palette'][$name]);
+	  }
+	  $output .= '</div>';
+	
+	  // Picker color box
+	  $output .= '<div id="enews-picker"></div>';
+
+	  // close enews-wrapper
+	  $output .= '<div align="center"><input type="button" id="enews-result" value="&raquo; 產生電子報" /></div>';
+	  $output .= '</div>';
+
+	  // Close wrapper
+	  $output .= '</div>';
+
+	  // Preview
+	  // jinmou marked 2012/05/29
+	  //$output .= drupal_render($form);
+	  $output .= '<h2>'. t('Preview') .'</h2>';
+	  $output .= '<div id="enews-preview">';
+	  $output .= enews_generator_template_load('t3');
+	  $output .= '</div>';
+  }
+// added 2012/05/29	  
+//dpm($output);
+  // clear form		jinmou 2012/05/29
   
-  $output .= drupal_render($form);
-  $output .= '<h2>'. t('Preview') .'</h2>';
-  $output .= '<div id="enews-preview">';
-  $output .= enews_generator_template_load('t1');
-  $output .= '</div>';
 
   return $output;
-}
-
-/*
-function enews_generator_validate($form, &$form_state){
 
 }
-function enews_generator_submit($form, &$form_state){
 
+
+// this is the function I need to implement   jinmou 2012/05/22	
+function enews_generator_form_validate($form, &$form_state){
+	/*//if ($form['scheme']['#options'] == 'Type1' ) {
+    		print 444;
+		print "this is {$form['scheme']['#type']} !";
+		print "this is {$form['scheme']['#title']} !";
+		print "this is {$form['scheme']['#options'][0]} !";*/
+		//print "*Validate* this is {$form_state['values']['scheme']} !";
+  	//}
 }
-*/
+
+function enews_generator_form_submit($form, &$form_state){
+ 	//print_r($form_state) ;
+	// added 2012/05/29
+	$form_state['rebuild'] = TRUE;
+
+	if ($form_state['values']['scheme'] == 1)
+	{	
+		//dpm('*Submit* Type1');
+		//print_r(*Submit* {$form_state['values']['scheme']});
+				
+	}
+
+	if ($form_state['values']['scheme'] == 2)	
+	{	
+		//dpm( '*Submit* Type2');
+		
+	}
+
+	if ($form_state['values']['scheme'] == 3)	
+	{	
+		//dpm( '*Submit* Type3');
+		
+	}
+	
+	
+	//exit;
+	
+}
+
 
 
 function enews_generator_schemes($names){
@@ -148,11 +335,14 @@ function enews_generator_schemes($names){
   return $schemes;
 }
 
+/* This function is not using  by jinmou  2012/05/17 /
 function enews_generator_scheme($names, $base_color, $fg_color, $inline = true){
+*/
 /*
   $color = color_scheme_create($base_color, $fg_color);
   $cc = color_scheme_mix($base_color, 0.3, 135);
 */
+/* This function is not using  by jinmou 2012/05/17
   $rand = mt_rand(1,4);
   $rand2 = $rand == 4 ? $rand-1 : $rand+1;
   foreach($names as $k => $v){
@@ -187,8 +377,9 @@ function enews_generator_scheme($names, $base_color, $fg_color, $inline = true){
     return implode(',', $names);
   }
   return $names;
-}
+}*/
 
+/* it seems useless  jinmou 2012/05/17*/
 function enews_generator_palette($schemes, $names){
   $rand = mt_rand(1, count($schemes));
   foreach($schemes as $s => $n){
@@ -202,6 +393,8 @@ function enews_generator_palette($schemes, $names){
   return array_combine($key, $value);
 }
 
+
+// called from theme_enews_generator_form  jinmou 2012/05/17
 function enews_generator_template_load($name){
   $path = drupal_get_path('module', 'enews_generator');
   $html = file_get_contents($path.'/templates/'.$name.'.inc');
