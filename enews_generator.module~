@@ -239,11 +239,8 @@ function enews_generator_schemes($names){
      			't3',
 			'simple-basic',
 			'simple-leftsidebar',	
-			'simple-rightsidebar',			
 			'simple-letterhead-centerlogo',	
-			'simple-letterhead-leftlogo',	
-			'simple-letterhead-rightlogo',
-			'simple-postcard',					
+			'simple-letterhead-leftlogo',			
   	);
 
   // jinmou marked 2012/06/05

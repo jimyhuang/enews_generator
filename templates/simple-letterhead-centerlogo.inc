@@ -1,5 +1,5 @@
 <div data-type="background"> <!-- background -->  
-<div data-type="base"> <!-- base -->  						
+<div data-type="base"> <!-- base -->  		
     	<center>
         	<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="backgroundTable">
             	<tr>
@@ -18,16 +18,16 @@
                                                 </div>
                                             </td>
                                             <!-- *|IFNOT:ARCHIVE_PAGE|* -->
-											<td valign="top" width="190">
+											<td valign="top" width="170">
                                             	<div mc:edit="std_preheader_links">
-                                                	Is this email not displaying correctly?<br /><a href="*|ARCHIVE|*" target="_blank">View it in your browser</a>.
+                                                	Email not displaying correctly?<br /><a href="*|ARCHIVE|*" target="_blank">View it in your browser</a>.
                                                 </div>
                                             </td>
 											<!-- *|END:IF|* -->
                                         </tr>
                                     </table>
                                 	<!-- // End Module: Standard Preheader \ -->
-                                
+                                    
                                 </td>
                             </tr>
                         </table>
@@ -40,10 +40,26 @@
                                         <tr>
                                             <td class="headerContent">
                                             
-                                            	<!-- // Begin Module: Standard Header Image \\ -->
-                                            	<img src="http://gallery.mailchimp.com/653153ae841fd11de66ad181a/images/placeholder_600.gif" style="max-width:600px;" id="headerImage campaign-icon" mc:label="header_image" mc:edit="header_image" mc:allowdesigner mc:allowtext />
-                                            	<!-- // End Module: Standard Header Image \\ -->
-                                            
+                                                <!-- // Begin Module: Letterhead, Center Header Image \\ -->
+                                                <table border="0" cellpadding="10" cellspacing="0" width="100%">
+                                                    <tr>
+                                                    	<td class="leftHeaderContent">
+                                                            <div mc:edit="header_content_left">
+                                                            	Heading 1
+                                                            </div>
+                                                        </td>
+                                                        <td valign="middle" width="180">
+                                                            <img src="http://gallery.mailchimp.com/27aac8a65e64c994c4416d6b8/images/placeholder_180x100.gif" style="max-width:180px;" id="headerImage campaign-icon" mc:label="header_image" mc:edit="header_image" mc:allowtext />
+                                                        </td>
+                                                        <td class="rightHeaderContent">
+                                                            <div mc:edit="header_content_right">
+                                                            	Heading 1
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <!-- // End Module: Letterhead, Center Header Image \\ -->
+
                                             </td>
                                         </tr>
                                     </table>
@@ -53,32 +69,28 @@
                         	<tr>
                             	<td align="center" valign="top">
                                     <!-- // Begin Template Body \\ -->
-                                	<table border="0" cellpadding="0" cellspacing="0" width="600" id="templateBody">
+                                	<table border="0" cellpadding="10" cellspacing="0" width="600" id="templateBody">
                                     	<tr>
-                                            <td valign="top" class="bodyContent">
-                        
+                                        	<td valign="top" class="bodyContent">
+                                            
                                                 <!-- // Begin Module: Standard Content \\ -->
-                                                <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                                                <table border="0" cellpadding="10" cellspacing="0" width="100%">
                                                     <tr>
                                                         <td valign="top">
-
                                                             <div mc:edit="std_content00">
-                                                                <h1 class="h1">Heading 1</h1>
-                                                                <h2 class="h2">Heading 2</h2>
-                                                                <h3 class="h3">Heading 3</h3>
-                                                                <h4 class="h4">Heading 4</h4>
+                                                            	<h2 class="h2">Heading 2</h2>
+                                                            	<h3 class="h3">Heading 3</h3>
                                                                 <strong>Getting started:</strong> Customize your template by clicking on the style editor tabs up above. Set your fonts, colors, and styles. After setting your styling is all done you can click here in this area, delete the text, and start adding your own awesome content!
                                                                 <br />
                                                                 <br />
+                                                                <h4 class="h4">Heading 4</h4>
                                                                 After you enter your content, highlight the text you want to style and select the options you set in the style editor in the "styles" drop down box. Want to <a href="http://www.mailchimp.com/kb/article/im-using-the-style-designer-and-i-cant-get-my-formatting-to-change" target="_blank">get rid of styling on a bit of text</a>, but having trouble doing it? Just use the "remove formatting" button to strip the text of any formatting and reset your style.
-                                                            </div>
-
+															</div>
 														</td>
                                                     </tr>
-
                                                 </table>
                                                 <!-- // End Module: Standard Content \\ -->
-                                              
+                                            
                                             </td>
                                         </tr>
                                     </table>
@@ -88,7 +100,7 @@
                         	<tr>
                             	<td align="center" valign="top">
                                     <!-- // Begin Template Footer \\ -->
-                                	<table border="0" cellpadding="10" cellspacing="0" width="600" id="templateFooter">
+                                	<table border="0" cellpadding="0" cellspacing="0" width="600" id="templateFooter">
                                     	<tr>
                                         	<td valign="top" class="footerContent">
                                             
@@ -96,11 +108,9 @@
                                                 <table border="0" cellpadding="10" cellspacing="0" width="100%">
                                                     <tr>
                                                         <td colspan="2" valign="middle" id="social">
-
                                                             <div mc:edit="std_social">
                                                                 &nbsp;<a href="*|TWITTER:PROFILEURL|*">follow on Twitter</a> | <a href="*|FACEBOOK:PROFILEURL|*">friend on Facebook</a> | <a href="*|FORWARD|*">forward to a friend</a>&nbsp;
                                                             </div>
-
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -139,10 +149,9 @@
                             </tr>
                         </table>
                         <br />
-			
                     </td>
                 </tr>
             </table>
         </center>
-</div> <!-- // End base \\ -->
+     </div> <!-- // End base \\ -->
 </div> <!-- // End background \\ -->

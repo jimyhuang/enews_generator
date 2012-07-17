@@ -1,19 +1,18 @@
-
 			/* Client-specific Styles */
 			#outlook a{padding:0;} /* Force Outlook to provide a "view in browser" button. */
 			body{width:100% !important;} .ReadMsgBody{width:100%;} .ExternalClass{width:100%;} /* Force Hotmail to display emails at full width */
 			body{-webkit-text-size-adjust:none;} /* Prevent Webkit platforms from changing default text sizes. */
-
+			
 			/* Reset Styles */
 			body{margin:0; padding:0;}
 			img{border:0; height:auto; line-height:100%; outline:none; text-decoration:none;}
 			table td{border-collapse:collapse;}
 			#backgroundTable{height:100% !important; margin:0; padding:0; width:100% !important;}
-
+			
 			/* Template Styles */
-
+			
 			/* /\/\/\/\/\/\/\/\/\/\ STANDARD STYLING: COMMON PAGE ELEMENTS /\/\/\/\/\/\/\/\/\/\ */
-
+			
 			/**
 			* @tab Page
 			* @section background color
@@ -21,9 +20,9 @@
 			* @theme page
 			*/
 			body, #backgroundTable{
-				/*@editable*/ /*background-color:#FAFAFA;*/ /*jinmou marked*/
+				/*@editable*/ background-color:#FAFAFA;
 			}
-
+			
 			/**
 			* @tab Page
 			* @section email border
@@ -32,7 +31,7 @@
 			#templateContainer{
 				/*@editable*/ border: 1px solid #DDDDDD;
 			}
-
+			
 			/**
 			* @tab Page
 			* @section heading 1
@@ -40,7 +39,7 @@
 			* @style heading 1
 			*/
 			h1, .h1{
-				/*@editable*/ /*color:#202020;*/ /*jinmou marked*/
+				/*@editable*/ color:#202020;
 				display:block;
 				/*@editable*/ font-family:Arial;
 				/*@editable*/ font-size:34px;
@@ -60,7 +59,7 @@
 			* @style heading 2
 			*/
 			h2, .h2{
-				/*@editable*/ /*color:#202020;*/ /* jinmou marked*/
+				/*@editable*/ color:#202020;
 				display:block;
 				/*@editable*/ font-family:Arial;
 				/*@editable*/ font-size:30px;
@@ -80,7 +79,7 @@
 			* @style heading 3
 			*/
 			h3, .h3{
-				/*@editable*/ /*color:#202020;*/ /* jinmou marked*/
+				/*@editable*/ color:#202020;
 				display:block;
 				/*@editable*/ font-family:Arial;
 				/*@editable*/ font-size:26px;
@@ -100,7 +99,7 @@
 			* @style heading 4
 			*/
 			h4, .h4{
-				/*@editable*/ /*color:#202020;*/ /* jinmou marked*/
+				/*@editable*/ color:#202020;
 				display:block;
 				/*@editable*/ font-family:Arial;
 				/*@editable*/ font-size:22px;
@@ -112,9 +111,9 @@
 				margin-left:0;
 				/*@editable*/ text-align:left;
 			}
-
+			
 			/* /\/\/\/\/\/\/\/\/\/\ STANDARD STYLING: PREHEADER /\/\/\/\/\/\/\/\/\/\ */
-
+			
 			/**
 			* @tab Header
 			* @section preheader style
@@ -122,9 +121,9 @@
 			* @theme page
 			*/
 			#templatePreheader{
-				/*@editable*/ /*background-color:#FAFAFA;*/ /*jinmou marked*/
+				/*@editable*/ background-color:#FAFAFA;
 			}
-
+			
 			/**
 			* @tab Header
 			* @section preheader text
@@ -137,7 +136,7 @@
 				/*@editable*/ line-height:100%;
 				/*@editable*/ text-align:left;
 			}
-
+			
 			/**
 			* @tab Header
 			* @section preheader link
@@ -148,9 +147,11 @@
 				/*@editable*/ font-weight:normal;
 				/*@editable*/ text-decoration:underline;
 			}
+			
 
+			
 			/* /\/\/\/\/\/\/\/\/\/\ STANDARD STYLING: HEADER /\/\/\/\/\/\/\/\/\/\ */
-
+			
 			/**
 			* @tab Header
 			* @section header style
@@ -158,10 +159,10 @@
 			* @theme header
 			*/
 			#templateHeader{
-				/*@editable*/ /*background-color:#FFFFFF;*//* jinmou marked*/
+				/*@editable*/ background-color:#FFFFFF;
 				/*@editable*/ border-bottom:0;
 			}
-
+			
 			/**
 			* @tab Header
 			* @section header text
@@ -177,7 +178,7 @@
 				/*@editable*/ text-align:center;
 				/*@editable*/ vertical-align:middle;
 			}
-
+			
 			/**
 			* @tab Header
 			* @section header link
@@ -188,12 +189,12 @@
 				/*@editable*/ font-weight:normal;
 				/*@editable*/ text-decoration:underline;
 			}
-
+			
 			#headerImage{
 				height:auto;
-				max-width:600px !important;
+				max-width:600px;
 			}
-
+			
 			/* /\/\/\/\/\/\/\/\/\/\ STANDARD STYLING: MAIN BODY /\/\/\/\/\/\/\/\/\/\ */
 
 			/**
@@ -202,9 +203,9 @@
 			* @tip Set the background color for your email's body area.
 			*/
 			#templateContainer, .bodyContent{
-				/*@editable*/ /*background-color:#FFFFFF;*/ /* jinmou marked*/
+				/*@editable*/ background-color:#FFFFFF;
 			}
-
+			
 			/**
 			* @tab Body
 			* @section body text
@@ -212,31 +213,31 @@
 			* @theme main
 			*/
 			.bodyContent div{
-				/*@editable*/ /*color:#505050;*/ /* jinmou marked*/
+				/*@editable*/ color:#505050;
 				/*@editable*/ font-family:Arial;
 				/*@editable*/ font-size:14px;
 				/*@editable*/ line-height:150%;
 				/*@editable*/ text-align:left;
 			}
-
+			
 			/**
 			* @tab Body
 			* @section body link
 			* @tip Set the styling for your email's main content links. Choose a color that helps them stand out from your text.
 			*/
 			.bodyContent div a:link, .bodyContent div a:visited, /* Yahoo! Mail Override */ .bodyContent div a .yshortcuts /* Yahoo! Mail Override */{
-				/*@editable*/ /*color:#336699;*/ /* jinmou marked*/
+				/*@editable*/ color:#336699;
 				/*@editable*/ font-weight:normal;
 				/*@editable*/ text-decoration:underline;
 			}
-
+			
 			.bodyContent img{
 				display:inline;
 				height:auto;
 			}
-
+			
 			/* /\/\/\/\/\/\/\/\/\/\ STANDARD STYLING: FOOTER /\/\/\/\/\/\/\/\/\/\ */
-
+			
 			/**
 			* @tab Footer
 			* @section footer style
@@ -247,7 +248,7 @@
 				/*@editable*/ background-color:#FFFFFF;
 				/*@editable*/ border-top:0;
 			}
-
+			
 			/**
 			* @tab Footer
 			* @section footer text
@@ -261,7 +262,7 @@
 				/*@editable*/ line-height:125%;
 				/*@editable*/ text-align:left;
 			}
-
+			
 			/**
 			* @tab Footer
 			* @section footer link
@@ -272,11 +273,11 @@
 				/*@editable*/ font-weight:normal;
 				/*@editable*/ text-decoration:underline;
 			}
-
+			
 			.footerContent img{
 				display:inline;
 			}
-
+			
 			/**
 			* @tab Footer
 			* @section social bar style
@@ -284,10 +285,10 @@
 			* @theme footer
 			*/
 			#social{
-				/*@editable*/ /*background-color:#FAFAFA;*/ /*jinmou marked*/
+				/*@editable*/ background-color:#FAFAFA;
 				/*@editable*/ border:0;
 			}
-
+			
 			/**
 			* @tab Footer
 			* @section social bar style
@@ -296,7 +297,7 @@
 			#social div{
 				/*@editable*/ text-align:center;
 			}
-
+			
 			/**
 			* @tab Footer
 			* @section utility bar style
@@ -304,7 +305,7 @@
 			* @theme footer
 			*/
 			#utility{
-				/*@editable*/ /*background-color:#FFFFFF;*/ /* jinmou marked*/ 
+				/*@editable*/ background-color:#FFFFFF;
 				/*@editable*/ border:0;
 			}
 
@@ -316,8 +317,8 @@
 			#utility div{
 				/*@editable*/ text-align:center;
 			}
-
+			
 			#monkeyRewards img{
 				max-width:190px;
 			}
-
+		
