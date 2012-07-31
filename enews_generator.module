@@ -1,131 +1,224 @@
 <?php
-/*
- *Implementation of hook_menu
-*/
+
+//==============================//
+// enews_generator_menu 	//
+// Implementation of hook_menu	//
+//==============================//
 function enews_generator_menu(){
-  $items['newsletter/generator'] = array(
-    'title'            => 'Newsletter Generator',
-    'page callback'    => 'drupal_get_form',
-    'page arguments'   => array('enews_generator_form'),
-    'access arguments' => array('access content'),
-    'type'            => MENU_CALLBACK,
-  );
-  return $items;
+	$items['newsletter/generator'] = array(
+    		'title'            => 'newsletter generator',
+		'page callback'    => 'drupal_get_form',
+		'page arguments'   => array('enews_generator_form'),
+		'access arguments' => array('access content'),
+		'type'             => MENU_CALLBACK,
+  	);
+	return $items;
 }
-/**
- * Implementation of hook_theme().
- */
+
+//==============================//
+// enews_generator_theme 	//
+// Implementation of hook_theme	//
+// jinmou: seems useless...	//
+//==============================//
 function enews_generator_theme() {
-  return array(
-    'enews_generator_form' => array(
-      'arguments' => array('form' => NULL),
-    ),
-  );
+	return array(
+		'enews_generator_form' => array(
+      		'arguments' => array('form' => NULL),
+    		),
+  	);
 }
 
-function enews_generator_form(){
-  // Load variable
-  $names = array(
-    'background' => t('Background color'),
-    'base' => t('Base color'),
-    'article-odd' => t('Article background 1'),
-    'article-even' => t('Article background 2'),
-    // special handle for text or link
-    'link' => t('Link color'),
-    'text' => t('Text color'),
-    // extra1-x just search data-type
-    'extra1' => t('Extra color !d', array('!d' => '1')),
-  );
-  $base = drupal_get_path('module', 'color');
+//================================//
+// enews_generator_form 	  //
+// argument for drupal_get_form	  //
+// call back function		  //
+// enews_generator_form is form_id//
+//================================//
+function enews_generator_form(&$form_state){
 
-  // Add Farbtastic color picker
-  drupal_add_css('misc/farbtastic/farbtastic.css', 'module', 'all', FALSE);
-  drupal_add_js('misc/farbtastic/farbtastic.js');
+	//dpm($form_state) ;  
+	// Get templates we provide 
+	$templates = enews_generator_schemes($names);
+	//$templates[''] = t('');//t('Custom');
 
-  // Add custom CSS/JS
-//  drupal_add_css($base .'/color.css', 'module', 'all', FALSE);
-//  drupal_add_js($base .'/color.js');
-  drupal_add_css(drupal_get_path('module', 'enews_generator').'/enews_generator.css');
-  drupal_add_js(drupal_get_path('module', 'enews_generator').'/enews_generator.js');
-  $schemes = enews_generator_schemes($names);
-  $schemes[''] = t('Custom');
-
-  $form['scheme'] = array(
-    '#type' => 'select',
-    '#title' => t('Color set'),
-    '#options' => $schemes,
-    '#default_value' => '',
-  );
-
-  // Add palette fields
-  $form['palette']['#tree'] = true;
-  foreach ($names as $name => $translation) {
-    $form['palette'][$name] = array(
-      '#type' => 'textfield',
-      '#title' => $translation,
-      '#default_value' => $value,
-      '#attributes' => array('class' => 'enews-palette'),
-      '#size' => 8,
-    );
-  }
-  return $form;
-}
-/**
- * Theme color and preview form.
- *
- * @ingroup themeable
- */
-function theme_enews_generator_form($form) {
-  // Include stylesheet
-  $theme = $form['theme']['#value'];
-  $info = $form['info']['#value'];
-  $output = '';
-  // Wrapper
-  $output .= '<div id="enews-wrapper" class="clear-block">';
-
-  // Color schemes
-  $output .= drupal_render($form['scheme']);
-
-  $output .= '<div class="clear-block">';
-
-  // Palette
-  $output .= '<div id="enews-palette">';
-  foreach (element_children($form['palette']) as $name) {
-    $output .= drupal_render($form['palette'][$name]);
-  }
-  $output .= '</div>';
-
-  // Picker color box
-  $output .= '<div id="enews-picker"></div>';
-
-  // close enews-wrapper
-  $output .= '<div align="center"><input type="button" id="enews-result" value="&raquo; 產生電子報" /></div>';
-  $output .= '</div>';
-
-  // Close wrapper
-  $output .= '</div>';
-
-  // Preview
+	// Form ´select´  	
+	$form['scheme'] = array(
+		'#type' => 'select', // select / checkboxe / textfield / submit / radios / textarea
+		//'#value' => t('template'),
+		'#title' => t('Template'), 
+		'#options' => $templates,
+		'#default_value' => '',
+	  	);
+	
+	// Form ´submit´
+	$form['choose'] = array(
+		'#type' => 'submit', // select / checkboxe / textfield / submit / radios / textarea
+		'#value' => t('SUBMIT'),
+		'#default_value' => '', 
+	  	);
+	
+	// Form ´value´ : Save form_state info. to form 	~jinmou 
+	$form['element'] = array
+	(
+		'#type' => 'value',
+	  	'#value' => isset($form_state['values']['scheme']) ? $form_state['values']['scheme'] : FALSE,
+	);
   
-  $output .= drupal_render($form);
-  $output .= '<h2>'. t('Preview') .'</h2>';
-  $output .= '<div id="enews-preview">';
-  $output .= enews_generator_template_load('t1');
-  $output .= '</div>';
+  	// when the callback function is called more than once (i.e. when the template is chosen and submitted)
+	if ($form_state['values']['scheme'])
+	{
+	  	// Load variable for color setting. Each element is a ´textfield´ Form
+		$names = array(
+			'background' => t('Background color'),
+			'base' => t('Base color'),
+			'article-odd' => t('Article background 1'),
+			'article-even' => t('Article background 2'),
 
-  return $output;
+		    	// special handle for text or link
+		    	'link' => t('Link color'),
+		    	'text' => t('Text color'),
+
+		    	// extra1-x just search data-type
+		    	'extra1' => t('Extra color !d', array('!d' => '1')),
+	  	);
+	  	
+		// seems useless	~jinmou		
+		//$base = drupal_get_path('module', 'color');
+	 
+		// Add Farbtastic color picker
+	  	drupal_add_css('misc/farbtastic/farbtastic.css', 'module', 'all', FALSE);
+	  	drupal_add_js('misc/farbtastic/farbtastic.js');
+
+		// Add custom CSS/JS
+		// drupal_add_css($base .'/color.css', 'module', 'all', FALSE);
+		// drupal_add_js($base .'/color.js');
+	  	drupal_add_css(drupal_get_path('module', 'enews_generator').'/enews_generator.css');
+	  	drupal_add_js(drupal_get_path('module', 'enews_generator').'/enews_generator.js');
+
+		// Form ´textfield´ : Add palette fields
+	  	$form['palette']['#tree'] = true;
+	  	foreach ($names as $name => $translation) {
+	    		$form['palette'][$name] = array(
+	      			'#type' => 'textfield',
+				'#title' => $translation,
+				'#default_value' => $value,
+				'#attributes' => array('class' => 'enews-palette'),
+				'#size' => 8,
+	    		);
+	  	}
+	}
+	return $form;
 }
 
-/*
-function enews_generator_validate($form, &$form_state){
 
+//================================//
+// theme_enews_generator_form	  //
+// Theme color and preview form	  //
+// Return output html		  //
+//================================//
+function theme_enews_generator_form($form) {
+	
+	if ($form['element']['#value']) // Handling only if template is chosen and submitted
+	{
+		// Retrieve template name	
+		$index = $form['element']['#value'];
+		$templatename = $form['scheme']['#options'][$index];
+
+		// Include stylesheet
+		// jinmou marked seems useless
+	  	/*$theme = $form['theme']['#value'];
+	  	$info = $form['info']['#value'];*/
+	  	$output = '';
+
+	  	// Wrapper
+	  	$output .= '<div id="enews-wrapper" class="clear-block">';
+
+	  	// Color schemes
+	  	// jinmou marked for testing 2012/05/29
+	  	//$output .= drupal_render($form['scheme']);
+	  	$output .= '<div class="clear-block">';
+
+	   	// Palette
+	  	$output .= '<div id="enews-palette">';
+	  	foreach (element_children($form['palette']) as $name) {
+	    		$output .= drupal_render($form['palette'][$name]);
+	  	}
+	 	$output .= '</div>';
+	
+	  	// Picker color box
+	  	$output .= '<div id="enews-picker"></div>';
+
+		// close enews-wrapper
+		$output .= '<div align="center"><input type="button" id="enews-result" value="&raquo; 產生電子報" /></div>';
+		$output .= '</div>';
+
+	  	// Close wrapper
+	  	$output .= '</div>';
+
+	  	// Preview
+	  	// jinmou marked 2012/05/29
+	  	//$output .= drupal_render($form);
+
+	  	$output .= '<h2>'. t('Preview') .'</h2>';
+	  	$output .= '<div id="enews-preview">';
+	  	$output .= enews_generator_template_load($templatename);
+	  	$output .= '</div>';
+ 	}
+	return $output;
 }
-function enews_generator_submit($form, &$form_state){
 
+
+//================================//
+// enews_generator_form_validate  //
+// Validate when submitting	  //
+// No implementation now	  //
+//================================//
+function enews_generator_form_validate($form, &$form_state){
+	/*//if ($form['scheme']['#options'] == 'T1' ) {
+    		print 444;
+		print "this is {$form['scheme']['#type']} !";
+		print "this is {$form['scheme']['#title']} !";
+		print "this is {$form['scheme']['#options'][0]} !";*/
+		//print "*Validate* this is {$form_state['values']['scheme']} !";
+  	//}
 }
-*/
+
+//================================//
+// enews_generator_form_submit	  //
+// Called when submitting	  //
+// Called after xxx_validate	  //
+//================================//
+function enews_generator_form_submit($form, &$form_state){
+ 	
+	// Set rebuild to TRUE or form will not appear	~jinmou	
+	$form_state['rebuild'] = TRUE;
+
+	/*if ($form_state['values']['scheme'] == 1)
+	{	
+		//print_r(*Submit* {$form_state['values']['scheme']});
+				
+	}
+
+	if ($form_state['values']['scheme'] == 2)	
+	{	
+		
+		
+	}
+
+	if ($form_state['values']['scheme'] == 3)	
+	{	
+		
+		
+	}*/
+	
+	//exit;
+}
 
 
+//================================//
+// enews_generator_schemes	  //
+// Provide templates we prepared  //
+//================================//
 function enews_generator_schemes($names){
 /*
   if(module_exists('color_scheme')){
@@ -140,19 +233,36 @@ function enews_generator_schemes($names){
     return $schemes;
   }
 */
-  $schemes = array(
-    '#53A3AA,#F07404,#FFFFFF,#FFFFFF,#A81D06,#153204,#53A3AA' => 'Type1',
-    '#C6344B,#B5A5A8,#EEE7E0,#EEE7E0,#777777,#C6344B,#A46E7C' => 'Type2',
-    '#F0FDC1,#86A02D,#E5F4AD,#E5F4AD,#FF9100,#777777,#A9C457' => 'Type3',
-  );
-  return $schemes;
+	$schemes = array('',
+     			't1',
+     			't2',
+     			't3',
+			'simple-basic',
+			'simple-leftsidebar',	
+			'simple-rightsidebar',			
+			'simple-letterhead-centerlogo',	
+			'simple-letterhead-leftlogo',	
+			'simple-letterhead-rightlogo',
+			'simple-postcard',					
+  	);
+
+  // jinmou marked 2012/06/05
+  /*$schemes = array(
+    '#53A3AA,#F07404,#FFFFFF,#FFFFFF,#A81D06,#153204,#53A3AA' => 'T1',
+    '#C6344B,#B5A5A8,#EEE7E0,#EEE7E0,#777777,#C6344B,#A46E7C' => 'T2',
+    '#F0FDC1,#86A02D,#E5F4AD,#E5F4AD,#FF9100,#777777,#A9C457' => 'T3',
+  );*/
+  	return $schemes;
 }
 
+/* This function is not using  by jinmou  2012/05/17 /
 function enews_generator_scheme($names, $base_color, $fg_color, $inline = true){
+*/
 /*
   $color = color_scheme_create($base_color, $fg_color);
   $cc = color_scheme_mix($base_color, 0.3, 135);
 */
+/* This function is not using  by jinmou 2012/05/17
   $rand = mt_rand(1,4);
   $rand2 = $rand == 4 ? $rand-1 : $rand+1;
   foreach($names as $k => $v){
@@ -187,8 +297,9 @@ function enews_generator_scheme($names, $base_color, $fg_color, $inline = true){
     return implode(',', $names);
   }
   return $names;
-}
+}*/
 
+/* it seems useless  jinmou 2012/05/17*/
 function enews_generator_palette($schemes, $names){
   $rand = mt_rand(1, count($schemes));
   foreach($schemes as $s => $n){
@@ -202,18 +313,25 @@ function enews_generator_palette($schemes, $names){
   return array_combine($key, $value);
 }
 
+
+//==============================================//
+// enews_generator_template_load  		//
+// Handle template html code	  		//
+// Return html code		  		//
+// called from theme_enews_generator_form	//
+//==============================================//
 function enews_generator_template_load($name){
-  $path = drupal_get_path('module', 'enews_generator');
-  $html = file_get_contents($path.'/templates/'.$name.'.inc');
-  $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
-  $css = file_get_contents($path.'/templates/'.$name.'.css');
-  module_load_include('inc', 'enews_generator', 'css_to_inline_styles');
-  $inline = new CSSToInlineStyles($html, $css);
-  $inline->setEncoding('UTF-8');
-  $html = $inline->convert();
-  $html = mb_convert_encoding($html, 'UTF-8', 'HTML-ENTITIES');
-  $html = preg_replace('/<\!DOC[^>]+>/', '', $html);
-  $html = preg_replace('/<\/?html>/', '', $html);
-  $html = preg_replace('/<\/?body>/', '', $html);
-  return $html; 
+	$path = drupal_get_path('module', 'enews_generator');
+	$html = file_get_contents($path.'/templates/'.$name.'.inc');
+	$html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
+	$css = file_get_contents($path.'/templates/'.$name.'.css');
+	module_load_include('inc', 'enews_generator', 'css_to_inline_styles');
+	$inline = new CSSToInlineStyles($html, $css); //class?
+	$inline->setEncoding('UTF-8');
+	$html = $inline->convert();
+	$html = mb_convert_encoding($html, 'UTF-8', 'HTML-ENTITIES');
+	$html = preg_replace('/<\!DOC[^>]+>/', '', $html);
+	$html = preg_replace('/<\/?html>/', '', $html);
+	$html = preg_replace('/<\/?body>/', '', $html);
+	return $html; 
 }

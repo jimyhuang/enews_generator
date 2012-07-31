@@ -10,7 +10,7 @@
         <img alt="" border="0" caption="" height="210" hspace="0" src="http://images.benchmarkemail.com/client171453/image535614.jpg" vspace="0" width="580" />
       </div>
       <div data-type="extra1" class="news-extra1">
-        <strong><span style="">2012 年4月份電子報 Template 1</span></strong>
+        <strong><span style="">2012 年4月份電子報 Template 2</span></strong>
       </div>
       <!-- top end here -->
       <!-- content start here -->
