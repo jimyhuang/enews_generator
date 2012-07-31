@@ -1,10 +1,8 @@
 #enews-picker {
-  float: left;
   margin: 0;
 }
 #enews-palette {
-  width: 300px;
-  float: left;
+  width: 230px;
 }
 #enews-palette .form-item {
   border: 0;
