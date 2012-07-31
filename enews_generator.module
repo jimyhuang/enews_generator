@@ -31,8 +31,8 @@ function enews_generator_theme() {
  */
 function enews_generator_form(&$form_state){
   // Get templates we provide
-  $templates = enews_generator_schemes($names);
-  $posibile_template = $form_state['post']['scheme'] ? $form_state['post']['scheme'] : arg(2);
+  $templates = _enews_generator_templates($names);
+  $posibile_template = $form_state['post']['select'] ? $form_state['post']['select'] : arg(2);
 
   // step 2 - pick color
   if(array_key_exists($posibile_template, $templates)){
@@ -59,7 +59,18 @@ function enews_generator_form(&$form_state){
     drupal_add_css(drupal_get_path('module', 'enews_generator').'/enews_generator.css');
     drupal_add_js(drupal_get_path('module', 'enews_generator').'/enews_generator.js');
 
-    // Form ´textfield´ : Add palette fields
+    // Add scheme
+    $schemes = _enews_generator_schemes($names);
+    $schemes[''] = t('Custom');
+
+    $form['scheme'] = array(
+      '#type' => 'select',
+      '#title' => t('Color set'),
+      '#options' => $schemes,
+      '#default_value' => '',
+    );
+
+    // Add palette fields
     $form['palette']['#tree'] = true;
     foreach ($names as $name => $translation) {
       $form['palette'][$name] = array(
@@ -73,7 +84,7 @@ function enews_generator_form(&$form_state){
   }
   // step 1 - select template
   else{
-    $form['scheme'] = array(
+    $form['select'] = array(
       '#type' => 'select',
       //'#value' => t('template'),
       '#title' => t('Template'),
@@ -89,7 +100,7 @@ function enews_generator_form(&$form_state){
 
     $form['element'] = array(
       '#type' => 'value',
-      '#value' => isset($form_state['values']['scheme']) ? $form_state['values']['scheme'] : FALSE,
+      '#value' => isset($form_state['values']['select']) ? $form_state['values']['select'] : FALSE,
     );
   }
   return $form;
@@ -106,7 +117,7 @@ function enews_generator_form_submit($form, &$form_state){
  * theme callback of form
  */
 function theme_enews_generator_form($form) {
-  $template = $form['#post']['scheme'] ? $form['#post']['scheme'] : arg(2);
+  $template = $form['#post']['select'] ? $form['#post']['select'] : arg(2);
   if ($template) {
     $output = '';
 
@@ -114,7 +125,8 @@ function theme_enews_generator_form($form) {
     $output .= '<div id="enews-wrapper" class="clear-block">';
 
     // Color schemes
-    $output .= '<div class="clear-block">';
+    $output .= drupal_render($form['scheme']);
+
 
      // Palette
     $output .= '<div id="enews-palette">';
@@ -128,7 +140,6 @@ function theme_enews_generator_form($form) {
 
     // close enews-wrapper
     $output .= '<div align="center"><input type="button" id="enews-result" value="&raquo; 產生電子報" /></div>';
-    $output .= '</div>';
 
     // Close wrapper
     $output .= '</div>';
@@ -136,7 +147,7 @@ function theme_enews_generator_form($form) {
     // Preview
     $output .= '<h2>'. t('Preview') .'</h2>';
     $output .= '<div id="enews-preview">';
-    $output .= enews_generator_template_load($template);
+    $output .= _enews_generator_template_load($template);
     $output .= '</div>';
    }
   return $output;
@@ -148,7 +159,7 @@ function theme_enews_generator_form($form) {
  *
  * scan directory to find out tpl.php
  */
-function enews_generator_schemes($names){
+function _enews_generator_templates($names){
   $path = drupal_get_path('module', 'enews_generator').'/templates';
   $files = file_scan_directory($path, '.tpl.php',  array('.', '..', 'CVS'), NULL, TRUE, 'name');
   foreach($files as $tpl => $file){
@@ -161,12 +172,22 @@ function enews_generator_schemes($names){
   return $schemes;
 }
 
+function _enews_generator_schemes($names){
+  $schemes = array(
+    '#53A3AA,#F07404,#FFFFFF,#FFFFFF,#A81D06,#153204,#53A3AA' => 'Type1',
+    '#C6344B,#B5A5A8,#EEE7E0,#EEE7E0,#777777,#C6344B,#A46E7C' => 'Type2',
+    '#F0FDC1,#86A02D,#E5F4AD,#E5F4AD,#FF9100,#777777,#A9C457' => 'Type3',
+  );
+  return $schemes;
+}
+
+
 /**
  * Template load helper function
  *
  * embed css into html to support modern mailbox
  */
-function enews_generator_template_load($name){
+function _enews_generator_template_load($name){
   $path = drupal_get_path('module', 'enews_generator');
   $html = file_get_contents($path.'/templates/'.$name.'.inc');
   $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
