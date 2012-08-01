@@ -1,5 +1,4 @@
 <div data-type="background"> <!-- background -->  
-<div data-type="base"> <!-- base -->  						
     	<center>
         	<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="backgroundTable">
             	<tr>
@@ -32,7 +31,7 @@
                             </tr>
                         </table>
                         <!-- // End Template Preheader \\ -->
-                    	<table border="0" cellpadding="0" cellspacing="0" width="600" id="templateContainer">
+                        <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateContainer" data-type="base">
                         	<tr>
                             	<td align="center" valign="top">
                                     <!-- // Begin Template Header \\ -->
@@ -144,5 +143,4 @@
                 </tr>
             </table>
         </center>
-</div> <!-- // End base \\ -->
 </div> <!-- // End background \\ -->

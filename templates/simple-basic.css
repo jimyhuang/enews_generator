@@ -320,4 +320,6 @@
 			#monkeyRewards img{
 				max-width:190px;
 			}
-
+#templatePreheader, #templateContainer {
+  width: 600px;
+}
