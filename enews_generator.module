@@ -203,7 +203,13 @@ function _enews_generator_schemes($names){
  */
 function _enews_generator_template_load($nid){
   if(is_numeric($nid)){
-    $node = node_load($nid);
+    if(arg(2) == 'revisions' && is_numeric(arg(3))){
+      $vid = arg(3);
+    }
+    else{
+      $vid = NULL;
+    }
+    $node = node_load($nid, $vid);
     $css = $node->field_enews_css[0]['value'];
     $html = $node->field_enews_html[0]['value'];
     $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
