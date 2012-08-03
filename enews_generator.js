@@ -68,6 +68,7 @@ Drupal.behaviors.color = function (context) {
   $('#enews-result').click(function(){
     var result = $('#enews-preview').html();
     var encoded = $("<div/>").text(result).html();
+    encoded = encoded.replace(/%7B/g, '{').replace(/%7D/g, '}');
     var popup = '<div id="enews-result-cbox"><textarea rows="8" style="width:430px;height:210px;" onclick="this.select();">'+encoded+'</textarea><div align="center">選擇上方產生的電子報，按 Ctrl+C 複製，貼上到你的編輯器</div></div>';
     $.colorbox({
       html:popup,
