@@ -3,5 +3,10 @@ description = Newsletter generator for color and scheme.
 core = 6.x
 dependencies[] = color
 dependencies[] = colorbox
-;dependencies[] = color_scheme
+dependencies[] = content
+dependencies[] = imageapi
+dependencies[] = imageapi_gd
+dependencies[] = filefield
+dependencies[] = imagefield
+dependencies[] = link
 
