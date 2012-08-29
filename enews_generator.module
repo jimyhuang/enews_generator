@@ -43,6 +43,7 @@ function enews_generator_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL){
 function enews_generator_pickup_form(&$form_state, $possible_template = NULL){
   // Get templates we provide
   $templates = _enews_generator_templates();
+
   if(!$possible_template){
     $possible_template = $form_state['post']['select'] ? $form_state['post']['select'] : arg(2);
   }
@@ -132,6 +133,7 @@ function enews_generator_pickup_form_submit($form, &$form_state){
  */
 function theme_enews_generator_pickup_form($form) {
   $template = $form['#template'] ? $form['#template'] : arg(2);
+
   if ($template) {
     $output = '';
 
@@ -142,10 +144,10 @@ function theme_enews_generator_pickup_form($form) {
     $output .= '<div align="center"><input type="button" id="enews-result" value="&raquo; 產生電子報" /></div>';
 
     // Color schemes
-    $output .= drupal_render($form['scheme']);
+    $output .= _enews_generator_colorscheme_load($template, $form['scheme']);
+    //$output .= drupal_render($form['scheme']);
 
-
-     // Palette
+    // Palette
     $output .= '<div id="enews-palette">';
     foreach (element_children($form['palette']) as $name) {
       $output .= drupal_render($form['palette'][$name]);
@@ -179,7 +181,6 @@ function _enews_generator_templates(){
   foreach($files as $tpl => $file){
     $idx = rtrim($tpl, '.tpl');
     $info = drupal_parse_info_file($file->filename);
-    // dpm($info['category']);
     $schemes[$idx] = $info['name'];
   }
 
@@ -229,5 +230,33 @@ function _enews_generator_template_load($nid){
   $html = preg_replace('/<\!DOC[^>]+>/', '', $html);
   $html = preg_replace('/<\/?html>/', '', $html);
   $html = preg_replace('/<\/?body>/', '', $html);
+  return $html;
+}
+
+/**
+ * Color scheme loading function
+ *
+ * load color scheme either from user input or default values
+ */
+function _enews_generator_colorscheme_load($nid, $color){
+  if(is_numeric($nid)){
+    $node = node_load($nid);
+    $colorscheme = $node->field_enews_colorscheme[0]['value'];
+    $colorarray = explode("\n",$colorscheme);
+    $num_color = count($colorarray);
+
+    for ($i=0 ; $i<$num_color ; $i++ ){
+      $tmp = explode("=>", $colorarray[$i]);
+      $fcolor[$tmp[0]] = $tmp[1];
+    }
+ 
+    $fcolor[''] = t('Custom');
+    $color['#options'] = $fcolor;
+    $html = drupal_render($color);
+  }
+  else{ // default color scheme
+    $html = drupal_render($color);
+  }
+ 
   return $html;
 }
