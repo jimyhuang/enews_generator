@@ -138,6 +138,9 @@ function theme_enews_generator_pickup_form($form) {
     // Wrapper
     $output .= '<div id="enews-wrapper" class="clear-block">';
 
+    // button for newsletter
+    $output .= '<div align="center"><input type="button" id="enews-result" value="&raquo; 產生電子報" /></div>';
+
     // Color schemes
     $output .= drupal_render($form['scheme']);
 
@@ -151,9 +154,6 @@ function theme_enews_generator_pickup_form($form) {
 
     // Picker color box
     $output .= '<div id="enews-picker"></div>';
-
-    // close enews-wrapper
-    $output .= '<div align="center"><input type="button" id="enews-result" value="&raquo; 產生電子報" /></div>';
 
     // Close wrapper
     $output .= '</div>';
