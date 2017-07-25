@@ -1,9 +1,6 @@
 Drupal.behaviors.color = function (context) {
-  $('h1.title').each(function(){
-    var title = $(this).html();
-    title += '<sup>Beta</sup>';
-    $(this).html(title);
-  });
+  $('h1.title > sup').remove();
+  $('<sup>Beta</sup>').appendTo('h1.title');
   $('#enews-preview').find('span.ext').remove();
   $('#enews-wrapper').hover(function(){
     $(this).css('opacity', 0.9);
